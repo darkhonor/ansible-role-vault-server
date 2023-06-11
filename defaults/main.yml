@@ -1,2 +1,7 @@
 ---
 # defaults file for vault-server
+connected_network: true
+repo_server: https://repo.homelab.local
+repo_path: 'repo/hashicorp'
+cert_path: 'certs/hashicorp.gpg'
+enable_service: true
