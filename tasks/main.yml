@@ -29,6 +29,23 @@
     name: vault 
     state: present
   when: "ansible_facts['distribution_major_version'] <= \"7\""
+- name: Copy Vault Config
+  ansible.builtin.template:
+    src: vault.hcl.j2
+    dest: /etc/vault.d/vault.hcl
+    backup: true
+    owner: vault
+    group: vault
+    mode: '0644'
+- name: Adjust Host Firewall to Allow Vault Services
+  ansible.posix.firewalld:
+    port: '{{ item }}'
+    permanent: true
+    immediate: true
+    state: enabled
+  loop:
+    - 8200/tcp
+    - 8201/tcp
 - name: Enable HashiCorp Vault on Startup
   ansible.builtin.service:
     name: vault

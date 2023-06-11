@@ -5,3 +5,7 @@ repo_server: https://repo.homelab.local
 repo_path: 'repo/hashicorp'
 cert_path: 'certs/hashicorp.gpg'
 enable_service: true
+hostname: localhost
+api_addr: "https://{{ hostname }}:8200"
+cluster_addr: "https://{{ hostname }}:8201"
+bind_addr: "0.0.0.0:8200"
