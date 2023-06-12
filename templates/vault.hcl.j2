@@ -7,12 +7,12 @@ storage "raft" {
   node_id = "rafts-01"
 }
 
-api_addr = {{ api_addr }}
-cluster_addr = {{ cluster_addr }}
+api_addr = "{{ api_addr }}"
+cluster_addr = "{{ cluster_addr }}"
 
 # HTTPS listener
 listener "tcp" {
-  address       = {{ bind_addr }}
+  address       = "{{ bind_addr }}"
   tls_cert_file = "/opt/vault/tls/tls.crt"
   tls_key_file  = "/opt/vault/tls/tls.key"
   tls_disable_client_certs = "true"
