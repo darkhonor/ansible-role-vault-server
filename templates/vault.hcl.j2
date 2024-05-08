@@ -4,16 +4,17 @@ ui = true
 
 storage "raft" {
   path = "/opt/vault/data"
-  node_id = "rafts-01"
+  node_id = "{{inventory_hostname}}"
 }
 
-api_addr = "{{ api_addr }}"
-cluster_addr = "{{ cluster_addr }}"
+api_addr = "https://{{ansible_host}}:8200"
+cluster_addr = "https://{{ansible_host}}:8201"
 
 # HTTPS listener
 listener "tcp" {
-  address       = "{{ bind_addr }}"
+  address       = "{{bind_addr}}:8200"
   tls_cert_file = "/opt/vault/tls/tls.crt"
   tls_key_file  = "/opt/vault/tls/tls.key"
-  tls_disable_client_certs = "true"
+  tls_client_ca_file = "/opt/vault/tls/ca.crt"
+  tls_disable_client_certs = "false"
 }

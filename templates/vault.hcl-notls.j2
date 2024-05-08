@@ -1,0 +1,17 @@
+# Full configuration options can be found at https://www.vaultproject.io/docs/configuration
+
+ui = true
+
+storage "raft" {
+  path = "/opt/vault/data"
+  node_id = "{{inventory_hostname}}"
+}
+
+api_addr = "http://{{ansible_host}}:8200"
+cluster_addr = "http://{{ansible_host}}:8201"
+
+# HTTP listener
+listener "tcp" {
+  address       = "{{bind_addr}}:8200"
+  tls_disable = true
+}

@@ -1,54 +1,10 @@
 ---
-# tasks file for vault-server
-- name: Install Local HashiCorp Repo
-  ansible.builtin.yum_repository:
-    name: hashicorp
-    description: HashiCorp Repository
-    baseurl: "{{ repo_server }}/{{ repo_path }}"
-    gpgcheck: true
-    gpgkey: "{{ repo_server }}/{{ cert_path }}"
-    enabled: true
-    state: present
-  when: not connected_network
-- name: Add the Internet HashiCorp Repository
-  ansible.builtin.yum_repository:
-    name: hashicorp
-    description: HashiCorp Repository
-    baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
-    gpgcheck: true
-    enabled: true
-    gpgkey: https://rpm.releases.hashicorp.com/gpg
-  when: connected_network
-- name: Install HashiCorp Vault 
-  ansible.builtin.dnf:
-    name: vault 
-    state: present
-  when: "ansible_facts['distribution_major_version'] >= \"8\""
-- name: Install HashiCorp Vault 
-  ansible.builtin.yum:
-    name: vault 
-    state: present
-  when: "ansible_facts['distribution_major_version'] <= \"7\""
-- name: Copy Vault Config
-  ansible.builtin.template:
-    src: vault.hcl.j2
-    dest: /etc/vault.d/vault.hcl
-    backup: true
-    owner: vault
-    group: vault
-    mode: '0644'
-- name: Adjust Host Firewall to Allow Vault Services
-  ansible.posix.firewalld:
-    port: '{{ item }}'
-    permanent: true
-    immediate: true
-    state: enabled
-  loop:
-    - 8200/tcp
-    - 8201/tcp
-- name: Enable HashiCorp Vault on Startup
-  ansible.builtin.service:
-    name: vault
-    enabled: true
-    state: started
-  when: enable_service
+# - name: "Prepare the {{ ansible_facts['distribution'] }} guest operating system."
+#   include_tasks: "{{ ansible_facts['distribution'] | lower }}.yml"
+#   when: "ansible_facts['distribution'] == 'Ubuntu'"
+- name: "Prepare the {{ ansible_facts['distribution'] }} guest operating system."
+  include_tasks: redhat.yml
+  when: "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux', 'OracleLinux']"
+# - name: "Prepare the {{ ansible_facts['os_family'] }} guest operating system."
+#   ansible.builtin.include_tasks: windows.yml
+#   when: ansible_facts['os_family'] == 'Windows'

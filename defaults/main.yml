@@ -1,11 +1,10 @@
 ---
 # defaults file for vault-server
-connected_network: true
-repo_server: https://repo.homelab.local
-repo_path: 'repo/hashicorp'
-cert_path: 'certs/hashicorp.gpg'
+airgap: false
+hashicorp_rpm_repo_url: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
+hashicorp_gpg_key_url: https://rpm.releases.hashicorp.com/gpg
+trust_repository_certs: true
 enable_service: true
-hostname: localhost
-api_addr: "https://{{ hostname }}:8200"
-cluster_addr: "https://{{ hostname }}:8201"
-bind_addr: "0.0.0.0:8200"
+service_state: started
+bind_addr: "0.0.0.0"
+enable_tls: true
